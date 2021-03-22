@@ -1,0 +1,41 @@
+#!/bin/sh
+
+function start {
+  hugo server
+}
+
+function dev {
+  hugo server -D
+}
+
+function build {
+  hugo
+}
+
+function deploy {
+  build
+  git -C public add -A
+  git -C public commit -m "Deploy"
+  git -C public push origin main
+}
+
+function page {
+  hugo new $1
+}
+
+function post {
+  hugo new blog/$1
+}
+
+function default {
+  serve
+}
+
+function help {
+    echo "$0 <task> <args>"
+    echo "Tasks:"
+    compgen -A function | cat -n
+}
+
+TIMEFORMAT="Task completed in %3lR"
+time ${@:-default}
